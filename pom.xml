@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>works.weave.microservices-demo</groupId>
-    <artifactId>orders</artifactId>
+    <artifactId>ordersprocess</artifactId>
     <packaging>jar</packaging>
 
-    <name>orders</name>
-    <description>Orders service for microservices-demo application</description>
+    <name>ordersprocess</name>
+    <description>ordersprocess service for microservices-demo application</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -21,8 +21,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <prometheus.version>0.0.21</prometheus.version>
-        <sonar.projectName>Orders</sonar.projectName>
-        <sonar.projectKey>Orders</sonar.projectKey>
+        <sonar.projectName>ordersprocess</sonar.projectName>
+        <sonar.projectKey>ordersprocess</sonar.projectKey>
     </properties>
 
     <dependencies>
@@ -80,7 +80,7 @@
     </dependencies>
 
     <build>
-        <finalName>orders</finalName>
+        <finalName>ordersprocess</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
