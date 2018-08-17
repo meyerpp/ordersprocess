@@ -126,6 +126,13 @@ public class OrdersProcessController {
 			// CustomerOrder savedOrder = customerOrderRepository.save(order);
 			LOG.info("Saved order: " + savedOrderFuture.get());
 
+			Future<String> deleteCartsResponse = asyncGetService.deleteCard(
+					config.deleteCarts(savedOrderFuture.get().getCustomerId()),
+					new ParameterizedTypeReference<String>() {
+					});
+
+			LOG.info("delete Response: " + deleteCartsResponse.get());
+
 			return savedOrderFuture.get();
 		} catch (TimeoutException e) {
 			throw new IllegalStateException("Unable to create order due to timeout from one of the services.", e);

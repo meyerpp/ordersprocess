@@ -57,7 +57,7 @@ public class CustomerOrder {
 
 	@Override
 	public String toString() {
-		return "CustomerOrder{" + "id='" + id + '\'' + ", Hallooooo='" + customerId + '\'' + ", customer=" + customer
+		return "CustomerOrder{" + "id='" + id + '\'' + ", customerId='" + customerId + '\'' + ", customer=" + customer
 				+ ", address=" + address + ", card=" + card + ", items=" + items + ", date=" + date + '}';
 	}
 
@@ -72,7 +72,7 @@ public class CustomerOrder {
 	}
 
 	public String getCustomerId() {
-		return "peter";
+		return this.customerId;
 	}
 
 	public void setCustomerId(String customerId) {

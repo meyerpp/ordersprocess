@@ -16,6 +16,10 @@ public class OrdersProcessConfigurationProperties {
 		return new ServiceUri(new Hostname("orders"), new Domain(domain), "/save").toUri();
 	}
 
+	public URI deleteCarts(String id) {
+		return new ServiceUri(new Hostname("carts"), new Domain(domain), "/carts/" + id).toUri();
+	}
+
 	public URI getPaymentUri() {
 		return new ServiceUri(new Hostname("payment"), new Domain(domain), "/paymentAuth").toUri();
 	}

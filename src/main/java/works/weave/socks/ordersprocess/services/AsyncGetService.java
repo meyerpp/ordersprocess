@@ -18,8 +18,10 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.hateoas.mvc.TypeReferences;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -112,6 +114,17 @@ public class AsyncGetService {
 		LOG.info("Requesting: " + request.toString());
 		T responseBody = restProxyTemplate.getRestTemplate().exchange(request, returnType).getBody();
 		LOG.info("Received: " + responseBody);
+		return new AsyncResult<>(responseBody);
+	}
+
+	@Async
+	public <T> Future<T> deleteCard(URI uri, ParameterizedTypeReference<T> returnType) {
+		RequestEntity<T> request = new RequestEntity<>(HttpMethod.DELETE, uri);
+		LOG.info("Deleting: " + request.toString());
+		ResponseEntity<T> response = restProxyTemplate.getRestTemplate().exchange(request, returnType);
+		T responseBody = response.getBody();
+		LOG.info("Deleted: " + response.toString());
+		LOG.info("status: " + response.getStatusCode());
 		return new AsyncResult<>(responseBody);
 	}
 }
