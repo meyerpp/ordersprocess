@@ -1,8 +1,6 @@
 package works.weave.socks.ordersprocess.controllers;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -83,19 +81,12 @@ public class OrdersProcessController {
 					});
 			LOG.debug("End of calls.");
 
-			// float amount = calculateTotal(itemsFuture.get(timeout,
-			// TimeUnit.SECONDS));
+			Future<String> amountResponse = asyncGetService.postResource(config.getOrderAmountUri(), itemsFuture.get(),
+					new ParameterizedTypeReference<String>() {
+					});
 
-			URI testuri = null;
-			try {
-				testuri = new URI("http://orders/amount");
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			String amountResponse = asyncGetService.getAmount(testuri);
-
-			float amount = 42;
+			LOG.info("tuedelue:" + amountResponse.get());
+			float amount = Float.parseFloat(amountResponse.get());
 
 			// Call payment service to make sure they've paid
 			PaymentRequest paymentRequest = new PaymentRequest(

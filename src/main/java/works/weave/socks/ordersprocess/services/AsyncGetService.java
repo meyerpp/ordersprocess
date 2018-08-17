@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import works.weave.socks.ordersprocess.config.RestProxyTemplate;
+import works.weave.socks.ordersprocess.entities.Item;
 
 @Service
 public class AsyncGetService {
@@ -67,7 +68,19 @@ public class AsyncGetService {
 	public String getAmount(URI url) {
 		RestTemplate restTemplate = new RestTemplate();
 		LOG.info("jetzt gehts los");
-		String result = restTemplate.getForObject(url, String.class);
+		String result = restTemplate.postForObject(url, null, String.class);
+		LOG.info("Received: " + result);
+		return result;
+	}
+
+	@Async
+	public String postAmount(URI url, List<Item> items) {
+		RestTemplate restTemplate = new RestTemplate();
+		LOG.info("jetzt gehts los");
+		if (items.isEmpty()) {
+			return "ciao kakao";
+		}
+		String result = restTemplate.postForObject(url, items.get(0).toString(), String.class);
 		LOG.info("Received: " + result);
 		return result;
 	}

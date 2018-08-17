@@ -1,84 +1,85 @@
 package works.weave.socks.ordersprocess.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.net.URI;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties
 public class OrdersProcessConfigurationProperties {
-    private String domain = "";
+	private String domain = "";
 
-    public URI getPaymentUri() {
-        return new ServiceUri(new Hostname("payment"), new Domain(domain), "/paymentAuth").toUri();
-    }
+	public URI getOrderAmountUri() {
+		return new ServiceUri(new Hostname("orders"), new Domain(domain), "/amount").toUri();
+	}
 
-    public URI getShippingUri() {
-        return new ServiceUri(new Hostname("shipping"), new Domain(domain), "/shipping").toUri();
-    }
+	public URI getPaymentUri() {
+		return new ServiceUri(new Hostname("payment"), new Domain(domain), "/paymentAuth").toUri();
+	}
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
+	public URI getShippingUri() {
+		return new ServiceUri(new Hostname("shipping"), new Domain(domain), "/shipping").toUri();
+	}
 
-    private class Hostname {
-        private final String hostname;
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 
-        private Hostname(String hostname) {
-            this.hostname = hostname;
-        }
+	private class Hostname {
+		private final String hostname;
 
-        @Override
-        public String toString() {
-            if (hostname != null && !hostname.equals("")) {
-                return hostname;
-            } else {
-                return "";
-            }
-        }
-    }
+		private Hostname(String hostname) {
+			this.hostname = hostname;
+		}
 
-    private class Domain {
-        private final String domain;
+		@Override
+		public String toString() {
+			if (hostname != null && !hostname.equals("")) {
+				return hostname;
+			} else {
+				return "";
+			}
+		}
+	}
 
-        private Domain(String domain) {
-            this.domain = domain;
-        }
+	private class Domain {
+		private final String domain;
 
-        @Override
-        public String toString() {
-            if (domain != null && !domain.equals("")) {
-                return "." + domain;
-            } else {
-                return "";
-            }
-        }
-    }
+		private Domain(String domain) {
+			this.domain = domain;
+		}
 
-    private class ServiceUri {
-        private final Hostname hostname;
-        private final Domain domain;
-        private final String endpoint;
+		@Override
+		public String toString() {
+			if (domain != null && !domain.equals("")) {
+				return "." + domain;
+			} else {
+				return "";
+			}
+		}
+	}
 
-        private ServiceUri(Hostname hostname, Domain domain, String endpoint) {
-            this.hostname = hostname;
-            this.domain = domain;
-            this.endpoint = endpoint;
-        }
+	private class ServiceUri {
+		private final Hostname hostname;
+		private final Domain domain;
+		private final String endpoint;
 
-        public URI toUri() {
-            return URI.create(wrapHTTP(hostname.toString() + domain.toString()) + endpoint);
-        }
+		private ServiceUri(Hostname hostname, Domain domain, String endpoint) {
+			this.hostname = hostname;
+			this.domain = domain;
+			this.endpoint = endpoint;
+		}
 
-        private String wrapHTTP(String host) {
-            return "http://" + host;
-        }
+		public URI toUri() {
+			return URI.create(wrapHTTP(hostname.toString() + domain.toString()) + endpoint);
+		}
 
-        @Override
-        public String toString() {
-            return "ServiceUri{" +
-                    "hostname=" + hostname +
-                    ", domain=" + domain +
-                    '}';
-        }
-    }
+		private String wrapHTTP(String host) {
+			return "http://" + host;
+		}
+
+		@Override
+		public String toString() {
+			return "ServiceUri{" + "hostname=" + hostname + ", domain=" + domain + '}';
+		}
+	}
 }
