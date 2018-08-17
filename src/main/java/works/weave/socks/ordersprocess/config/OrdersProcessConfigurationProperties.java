@@ -12,6 +12,10 @@ public class OrdersProcessConfigurationProperties {
 		return new ServiceUri(new Hostname("orders"), new Domain(domain), "/amount").toUri();
 	}
 
+	public URI getOrderSaveUri() {
+		return new ServiceUri(new Hostname("orders"), new Domain(domain), "/save").toUri();
+	}
+
 	public URI getPaymentUri() {
 		return new ServiceUri(new Hostname("payment"), new Domain(domain), "/paymentAuth").toUri();
 	}

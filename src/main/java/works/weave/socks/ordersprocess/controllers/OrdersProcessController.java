@@ -117,12 +117,16 @@ public class OrdersProcessController {
 					addressFuture.get(timeout, TimeUnit.SECONDS).getContent(),
 					cardFuture.get(timeout, TimeUnit.SECONDS).getContent(), itemsFuture.get(timeout, TimeUnit.SECONDS),
 					shipmentFuture.get(timeout, TimeUnit.SECONDS), Calendar.getInstance().getTime(), amount);
-			LOG.debug("Received data: " + order.toString());
+			LOG.info("Received data: " + order.toString());
 
-			CustomerOrder savedOrder = customerOrderRepository.save(order);
-			LOG.debug("Saved order: " + savedOrder);
+			Future<CustomerOrder> savedOrderFuture = asyncGetService.postResource(config.getOrderSaveUri(), order,
+					new ParameterizedTypeReference<CustomerOrder>() {
+					});
 
-			return savedOrder;
+			// CustomerOrder savedOrder = customerOrderRepository.save(order);
+			LOG.info("Saved order: " + savedOrderFuture.get());
+
+			return savedOrderFuture.get();
 		} catch (TimeoutException e) {
 			throw new IllegalStateException("Unable to create order due to timeout from one of the services.", e);
 		} catch (InterruptedException | IOException | ExecutionException e) {
