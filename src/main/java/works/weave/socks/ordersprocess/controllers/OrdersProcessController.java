@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
 import works.weave.socks.ordersprocess.config.OrdersProcessConfigurationProperties;
 import works.weave.socks.ordersprocess.entities.Address;
 import works.weave.socks.ordersprocess.entities.Card;
@@ -33,7 +32,6 @@ import works.weave.socks.ordersprocess.entities.Customer;
 import works.weave.socks.ordersprocess.entities.CustomerOrder;
 import works.weave.socks.ordersprocess.entities.Item;
 import works.weave.socks.ordersprocess.entities.Shipment;
-import works.weave.socks.ordersprocess.repositories.CustomerOrderProcessRepository;
 import works.weave.socks.ordersprocess.resources.NewOrderResource;
 import works.weave.socks.ordersprocess.services.AsyncGetService;
 import works.weave.socks.ordersprocess.values.PaymentRequest;
@@ -49,8 +47,6 @@ public class OrdersProcessController {
 	@Autowired
 	private AsyncGetService asyncGetService;
 
-	@Autowired
-	private CustomerOrderProcessRepository customerOrderRepository;
 
 	@Value(value = "${http.timeout:5}")
 	private long timeout;
@@ -58,7 +54,7 @@ public class OrdersProcessController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(path = "/orders", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public @ResponseBody CustomerOrder newOrder(@RequestBody NewOrderResource item) {
-		LOG.info("Hallo du pimmel");
+		LOG.info("Begin of orderprocess");
 		try {
 
 			if (item.address == null || item.customer == null || item.card == null || item.items == null) {
@@ -85,7 +81,7 @@ public class OrdersProcessController {
 					new ParameterizedTypeReference<String>() {
 					});
 
-			LOG.info("tuedelue:" + amountResponse.get());
+			LOG.info("Amount to pay: " + amountResponse.get());
 			float amount = Float.parseFloat(amountResponse.get());
 
 			// Call payment service to make sure they've paid
@@ -167,14 +163,6 @@ public class OrdersProcessController {
 	//
 	// return ResponseEntity.ok(resources);
 	// }
-
-	private float calculateTotal(List<Item> items) {
-		float amount = 0F;
-		float shipping = 4.99F;
-		amount += items.stream().mapToDouble(i -> i.getQuantity() * i.getUnitPrice()).sum();
-		amount += shipping;
-		return amount;
-	}
 
 	@ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
 	public class PaymentDeclinedException extends IllegalStateException {
