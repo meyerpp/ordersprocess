@@ -1,31 +1,40 @@
-[![Build Status](https://travis-ci.org/microservices-demo/orders.svg?branch=master)](https://travis-ci.org/microservices-demo/orders) [![Coverage Status](https://coveralls.io/repos/github/microservices-demo/orders/badge.svg?branch=master)](https://coveralls.io/github/microservices-demo/orders?branch=master)
-[![](https://images.microbadger.com/badges/image/weaveworksdemos/orders.svg)](http://microbadger.com/images/weaveworksdemos/orders "Get your own image badge on microbadger.com")
+# Orders Process  
 
-# orders
-A microservices-demo service that provides ordering capabilities.
 
-This build is built, tested and released by travis.
+## Build 
 
-# API Spec
+```
+GROUP=weaveworksdemos COMMIT=MasterFachstudie ./scripts/build.sh
+```
 
-Checkout the API Spec [here](http://microservices-demo.github.io/api/index?url=https://raw.githubusercontent.com/microservices-demo/orders/master/api-spec/orders.json)
 
-# Build
+## Check
 
-## Jar
-`mvn -DskipTests package`
+```
+docker ps
+```
 
-## Docker
-`GROUP=weaveworksdemos COMMIT=test ./scripts/build.sh`
+Should show the newly created image `weaveworksdemos/ordersProcess:MasterFachstudie`
 
-# Test
-`./test/test.sh < python testing file >`. For example: `./test/test.sh unit.py`
 
-# Run
-`mvn spring-boot:run`
+## Start Process
+Change to demo application: 
+[Link to Repo](hhttps://github.com/Kerberos3000/microservices-demo)
 
-# Use
-`curl http://localhost:8082`
+and start it.
 
-# Push
-`GROUP=weaveworksdemos COMMIT=test ./scripts/push.sh`
+
+
+## Remark
+
+If you get the following error message:
+```
+cp: cannot create directory '…/ordersProcess/target/docker/': Permission denied
+```
+Try the following:
+
+1. `sudo rm -r target`
+2. `mkdir target`
+3. build again 
+
+It seems to be important that you manually create the target directory and not the script.
